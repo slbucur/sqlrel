@@ -1,0 +1,9 @@
+.idea
+node_modules
+dist
+app/out
+releases
+installers
+npm-debug.log
+.DS_Store
+.tmp
