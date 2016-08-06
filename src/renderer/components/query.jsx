@@ -3,7 +3,7 @@ import { debounce } from 'lodash';
 import AceEditor from 'react-ace';
 import ace from 'brace';
 import 'brace/mode/sql';
-import 'brace/theme/github';
+import 'brace/theme/ambiance';
 import 'brace/ext/language_tools';
 import 'brace/ext/searchbox';
 import QueryResult from './query-result.jsx';
@@ -248,7 +248,7 @@ export default class Query extends Component {
             onResize={::this.onQueryBoxResize}>
             <AceEditor
               mode="sql"
-              theme="github"
+              theme="ambiance"
               name="querybox"
               height="100%"
               width="100%"
