@@ -8,6 +8,7 @@ import 'brace/ext/language_tools';
 import 'brace/ext/searchbox';
 import QueryResult from './query-result.jsx';
 import ServerDBClientInfoModal from './server-db-client-info-modal.jsx';
+import GraphContainer from './graph-container.jsx'
 
 import { ResizableBox } from 'react-resizable';
 require('./react-resizable.css');
@@ -299,6 +300,13 @@ export default class Query extends Component {
           results={query.results}
           isExecuting={query.isExecuting}
           error={query.error} />
+        <GraphContainer
+          height={QUERY_EDITOR_HEIGTH}
+          copied={query.copied}
+          query={query.queryHistory[query.queryHistory.length - 1]}
+          results={query.results}
+          isExecuting={query.isExecuting}
+        />
         {this.state && this.state.infoModalVisible &&
           <ServerDBClientInfoModal
             infos={infos}

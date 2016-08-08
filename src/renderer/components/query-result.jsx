@@ -66,6 +66,8 @@ export default class QueryResult extends Component {
       widthOffset += 30; // padding of the query result box
     }
 
+    console.log('rendering');
+
     const tableResult = (
       <QueryResultTable
         key={queryIndex}
@@ -94,6 +96,7 @@ export default class QueryResult extends Component {
   }
 
   render() {
+    console.log('Query result rendering');
     const { isExecuting, error, results } = this.props;
     if (error) {
       if (error.message) {
