@@ -241,31 +241,40 @@ export default class Query extends Component {
   render() {
     const { widthOffset, client, query, onCopyToClipboardClick, onSQLChange } = this.props;
     const infos = INFOS[client];
-
+    console.log(query);
     return (
       <div>
         <div>
+          <div className="ui top attached tabular menu">
+            <a className="item active" data-tab="query">Query</a>
+            <a className="item" data-tab="graph-style">Graph Style</a>
+          </div>
+          <div className="ui bottom attached tab segment" data-tab="query">
           <ResizableBox
             className="react-resizable react-resizable-se-resize ui segment"
             height={QUERY_EDITOR_HEIGTH}
             width={500}
             onResize={::this.onQueryBoxResize}>
-            <AceEditor
-              mode="sql"
-              theme="ambiance"
-              name="querybox"
-              height="100%"
-              width="100%"
-              ref="queryBoxTextarea"
-              value={query.query}
-              showPrintMargin={false}
-              commands={this.getCommands()}
-              editorProps={{ $blockScrolling: Infinity }}
-              onChange={debounce(onSQLChange, 50)}
-              enableBasicAutocompletion
-              enableLiveAutocompletion
+              <AceEditor
+                mode="sql"
+                theme="ambiance"
+                name="querybox"
+                height="100%"
+                width="100%"
+                ref="queryBoxTextarea"
+                value={query.query}
+                showPrintMargin={false}
+                commands={this.getCommands()}
+                editorProps={{ $blockScrolling: Infinity }}
+                onChange={debounce(onSQLChange, 50)}
+                enableBasicAutocompletion
+                enableLiveAutocompletion
               />
           </ResizableBox>
+          </div>
+          <div className="ui bottom attached tab segment" data-tab="graph-style">
+
+          </div>
           <div className="ui secondary menu" style={{ marginTop: 0 }}>
             {infos &&
               <div className="item">
