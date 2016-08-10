@@ -162,6 +162,10 @@ export default class Query extends Component {
     this.refs.queryBoxTextarea.editor.resize();
   }
 
+  onGraphStyleBoxResize(){
+    // this.refs.graphStyleBoxTextarea.editor.resize();
+  }
+
   getQueryCompletions(props) {
     const {
       databases,
@@ -273,7 +277,27 @@ export default class Query extends Component {
           </ResizableBox>
           </div>
           <div className="ui bottom attached tab segment" data-tab="graph-style">
-
+            <ResizableBox
+              className="react-resizable react-resizable-se-resize ui segment"
+              height={QUERY_EDITOR_HEIGTH}
+              width={500}
+              onResize={::this.onGraphStyleBoxResize()}>
+              <AceEditor
+                mode="sql"
+                theme="ambiance"
+                name="graphstylebox"
+                height="100%"
+                width="100%"
+                ref="graphStyleBoxTextarea"
+                //value={query.query}
+                showPrintMargin={false}
+                commands={this.getCommands()}
+                editorProps={{ $blockScrolling: Infinity }}
+                //onChange={debounce(onSQLChange, 50)}
+                enableBasicAutocompletion
+                enableLiveAutocompletion
+              />
+            </ResizableBox>
           </div>
           <div className="ui secondary menu" style={{ marginTop: 0 }}>
             {infos &&
