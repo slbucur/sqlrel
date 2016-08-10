@@ -71,6 +71,9 @@ export default class Query extends Component {
     // init with the auto complete disabled
     this.refs.queryBoxTextarea.editor.completers = [];
     this.refs.queryBoxTextarea.editor.setOption('enableBasicAutocompletion', false);
+
+    $('.menu .item').tab();
+    $('.menu .item.active').click();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -290,23 +293,33 @@ export default class Query extends Component {
             </div>
           </div>
         </div>
-        <QueryResult
-          widthOffset={widthOffset}
-          heigthOffset={QUERY_EDITOR_HEIGTH}
-          onCopyToClipboardClick={onCopyToClipboardClick}
-          resultItemsPerPage={query.resultItemsPerPage}
-          copied={query.copied}
-          query={query.queryHistory[query.queryHistory.length - 1]}
-          results={query.results}
-          isExecuting={query.isExecuting}
-          error={query.error} />
-        <GraphContainer
-          height={QUERY_EDITOR_HEIGTH}
-          copied={query.copied}
-          query={query.queryHistory[query.queryHistory.length - 1]}
-          results={query.results}
-          isExecuting={query.isExecuting}
-        />
+        <div className="ui top attached tabular menu">
+          <a className="item active" data-tab="data">Data</a>
+          <a className="item" data-tab="graph">Graph</a>
+        </div>
+        <div className="ui bottom attached tab segment" data-tab="data">
+          <QueryResult
+            widthOffset={widthOffset}
+            heigthOffset={QUERY_EDITOR_HEIGTH}
+            onCopyToClipboardClick={onCopyToClipboardClick}
+            resultItemsPerPage={query.resultItemsPerPage}
+            copied={query.copied}
+            query={query.queryHistory[query.queryHistory.length - 1]}
+            results={query.results}
+            isExecuting={query.isExecuting}
+            error={query.error} />
+        </div>
+        <div className="ui bottom attached tab segment" data-tab="graph">
+          <GraphContainer
+            height={QUERY_EDITOR_HEIGTH}
+            copied={query.copied}
+            query={query.queryHistory[query.queryHistory.length - 1]}
+            results={query.results}
+            isExecuting={query.isExecuting}
+          />
+        </div>
+
+
         {this.state && this.state.infoModalVisible &&
           <ServerDBClientInfoModal
             infos={infos}

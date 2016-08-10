@@ -10,6 +10,10 @@ export default class GraphContainer extends React.Component{
     var rows = this.props.results[0].rows;
 
     function rowToRel(row){
+      //if no relation don't add
+      if(!row['node1'] || !row['node2']){
+        return [];
+      }
       var rel = { data: { source: row['node1'], target: row['node2'] } };
       var nodes = [
         { data: { id: row['node1'] } },
