@@ -4,7 +4,7 @@ import csvStringify from 'csv-stringify';
 import { clipboard } from 'electron'; // eslint-disable-line import/no-unresolved
 import { getCurrentDBConn, getDBConnByName } from './connections';
 import { rowsValuesToString } from '../utils/convert';
-import { showSaveDialog, saveFile } from '../utils/file-handler';
+import { showSaveDialog, saveFile, showOpenDialog, openFile } from '../utils/file-handler';
 import wait from '../utils/wait';
 
 
@@ -20,8 +20,20 @@ export const COPY_QUERY_RESULT_TO_CLIPBOARD_FAILURE = 'COPY_QUERY_RESULT_TO_CLIP
 export const SAVE_QUERY_REQUEST = 'SAVE_QUERY_REQUEST';
 export const SAVE_QUERY_SUCCESS = 'SAVE_QUERY_SUCCESS';
 export const SAVE_QUERY_FAILURE = 'SAVE_QUERY_FAILURE';
+
+export const SAVE_GRAPH_STYLE_REQUEST = 'SAVE_GRAPH_STYLE_REQUEST';
+export const SAVE_GRAPH_STYLE_SUCCESS = 'SAVE_GRAPH_STYLE_SUCCESS';
+export const SAVE_GRAPH_STYLE_FAILURE = 'SAVE_GRAPH_STYLE_FAILURE';
+
 export const UPDATE_QUERY = 'UPDATE_QUERY';
 export const UPDATE_GRAPH_STYLE = 'UPDATE_GRAPH_STYLE';
+export const IMPORT_QUERY_REQUEST = 'IMPORT_QUERY_REQUEST';
+export const IMPORT_QUERY_SUCCESS = 'IMPORT_QUERY_SUCCESS';
+export const IMPORT_QUERY_FAILURE = 'IMPORT_QUERY_FAILURE';
+
+export const IMPORT_GHAPH_STYLE_REQUEST = 'IMPORT_GHAPH_STYLE_REQUEST';
+export const IMPORT_GRAPH_STYLE_SUCCESS = 'IMPORT_GRAPH_STYLE_SUCCESS';
+export const IMPORT_GRAPH_STYLE_FAILURE = 'IMPORT_GRAPH_STYLE_FAILURE';
 
 
 export function newQuery (database) {
@@ -160,7 +172,7 @@ export function saveQuery () {
 
 export function saveGraphStyle () {
   return async (dispatch, getState) => {
-    dispatch({ type: SAVE_QUERY_REQUEST });
+    dispatch({ type: SAVE_GRAPH_STYLE_REQUEST });
     try {
       const currentQuery = getCurrentQuery(getState());
       const filters = [
@@ -168,20 +180,65 @@ export function saveGraphStyle () {
         { name: 'All Files', extensions: ['*'] },
       ];
 
-      let filename = (currentQuery.filename || await showSaveDialog(filters));
-      if (path.extname(filename) !== '.css') {
-        filename += '.css';
+      let graphStyleFilename = (currentQuery.graphStyleFilename || await showSaveDialog(filters));
+      if (path.extname(graphStyleFilename) !== '.css') {
+        graphStyleFilename += '.css';
       }
 
-      await saveFile(filename, currentQuery.graphStyle);
-      const name = path.basename(filename, '.css');
+      await saveFile(graphStyleFilename, currentQuery.graphStyle);
 
-      dispatch({ type: SAVE_QUERY_SUCCESS, name, filename });
+      dispatch({ type: SAVE_GRAPH_STYLE_SUCCESS, graphStyleFilename });
     } catch (error) {
-      dispatch({ type: SAVE_QUERY_FAILURE, error });
+      dispatch({ type: SAVE_GRAPH_STYLE_FAILURE, error });
     }
   };
 }
+
+export function importQuery () {
+  return async (dispatch, getState) => {
+    dispatch({ type: IMPORT_QUERY_REQUEST });
+    try {
+      const currentQuery = getCurrentQuery(getState());
+      const filters = [
+        { name: 'SQL', extensions: ['sql'] },
+        { name: 'All Files', extensions: ['*'] },
+      ];
+
+      let filename = await showOpenDialog(filters);
+      const name = path.basename(filename[0], '.sql');
+
+      let query = await openFile(filename[0]);
+
+      dispatch({ type: IMPORT_QUERY_SUCCESS, name, filename:filename[0] , query});
+    } catch (error) {
+      dispatch({ type: IMPORT_QUERY_FAILURE, error });
+    }
+  };
+}
+
+export function importGraphStyle () {
+  return async (dispatch, getState) => {
+    dispatch({ type: IMPORT_GHAPH_STYLE_REQUEST });
+    try {
+      const currentQuery = getCurrentQuery(getState());
+      const filters = [
+        { name: 'CSS', extensions: ['css'] },
+        { name: 'All Files', extensions: ['*'] },
+      ];
+
+      let filename = await showOpenDialog(filters);
+      const name = path.basename(filename[0], '.css');
+
+      let graphStyle = await openFile(filename[0]);
+
+      dispatch({ type: IMPORT_GRAPH_STYLE_SUCCESS, graphStyleFilename:filename[0] , graphStyle});
+    } catch (error) {
+      dispatch({ type: IMPORT_GRAPH_STYLE_FAILURE, error });
+    }
+  };
+}
+
+
 
 
 function shouldExecuteQuery (query, state) {

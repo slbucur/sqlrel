@@ -73,7 +73,18 @@ export function buildTemplate(app, buildNewWindow, appConfig) {
           label: 'Save Graph Style',
           accelerator: 'Cmd+G',
           click: (item, win) => win.webContents.send('sqlectron:save-graph-style'),
-        }
+        },
+        {
+          label: 'Import Query',
+          accelerator: 'Ctrl+0',
+          click: (item, win) => win.webContents.send('sqlectron:import-query'),
+        },
+        {
+          label: 'Import Graph Style',
+          accelerator: 'Ctrl+P',
+          click: (item, win) => win.webContents.send('sqlectron:import-graph-style'),
+        },
+
       ],
     },
     {

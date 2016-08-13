@@ -239,6 +239,8 @@ class QueryBrowserContainer extends Component {
       'sqlectron:close-tab': () => this.closeTab(),
       'sqlectron:save-query': () => this.saveQuery(),
       'sqlectron:save-graph-style': () => this.saveGraphStyle(),
+      'sqlectron:import-query': () => this.importQuery(),
+      'sqlectron:import-graph-style': () => this.importGraphStyle(),
       'sqlectron:query-focus': () => this.focusQuery(),
       'sqlectron:toggle-database-search': () => this.toggleDatabaseSearch(),
       'sqlectron:toggle-database-objects-search': () => this.toggleDatabaseObjectsSearch(),
@@ -268,6 +270,13 @@ class QueryBrowserContainer extends Component {
 
   saveGraphStyle() {
     this.props.dispatch(QueryActions.saveGraphStyle());
+  }
+
+  importQuery() {
+    this.props.dispatch(QueryActions.importQuery());
+  }
+  importGraphStyle() {
+    this.props.dispatch(QueryActions.importGraphStyle());
   }
 
   copyToClipboard (rows, type) {

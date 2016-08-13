@@ -20,8 +20,12 @@ export default function (state = INITIAL_STATE, action) {
       return 'Saving query...';
     case queriesTypes.SAVE_QUERY_SUCCESS:
       return 'Query saved successfully';
+    case queriesTypes.SAVE_GRAPH_STYLE_SUCCESS:
+      return 'Graph style saved successfully';
     case queriesTypes.SAVE_QUERY_FAILURE:
       return `Error saving query. ${action.error.message}`;
+    case queriesTypes.SAVE_GRAPH_STYLE_FAILURE:
+      return `Error saving graph style. ${action.error.message}`;
     default:
       return INITIAL_STATE;
   }
