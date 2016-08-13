@@ -2,7 +2,28 @@ import React,{Component} from 'react';
 import cytoscape from 'cytoscape';
 require('./graph-container.css');
 
+const DEFAULT_STYLE = `
+node{
+  height: 80;
+  width: 80;
+  background-fit: cover;
+  border-color: #000;
+  border-width: 3;
+  border-opacity: 0.5;
+  content: data(name);
+  text-valign: center;
+}
+edge{
+  width: 6;
+  target-arrow-shape: triangle;
+  line-color: #ffaaaa;
+  target-arrow-color: #ffaaaa;
+  curve-style: bezier;        
+}`;
+
 export default class GraphContainer extends React.Component{
+
+
 
   constructor(props, context) {
     super(props, context);
@@ -29,11 +50,15 @@ export default class GraphContainer extends React.Component{
         if(key.includes('1')){
           var itemKey = key.replace('1', '');
           nodes[0]['data'][itemKey] = row[key];
+          continue;
         }
         if(key.includes('2')){
           var itemKey = key.replace('2', '');
           nodes[1]['data'][itemKey] = row[key];
+          continue;
         }
+        //properties that don't belong to nodes go to the relationship
+        rel.data[key] = row[key];
       }
       return [nodes[0], nodes[1], rel];
     }
@@ -57,25 +82,8 @@ export default class GraphContainer extends React.Component{
       }
     }
 
-    var style = this.props.graphStyle ||
-      `
-        node{
-          height: 80;
-          width: 80;
-          background-fit: cover;
-          border-color: #000;
-          border-width: 3;
-          border-opacity: 0.5;
-          content: data(name);
-          text-valign: center;
-        }
-        edge{
-          width: 6;
-          target-arrow-shape: triangle;
-          line-color: #ffaaaa;
-          target-arrow-color: #ffaaaa;
-          curve-style: bezier;        
-        }`;
+    var style = this.props.graphStyle || DEFAULT_STYLE;
+
 
     console.log('* Cytoscape.js is rendering the graph..', elements);
 
@@ -97,6 +105,14 @@ export default class GraphContainer extends React.Component{
       });
 
     this.cy.on('tap', 'node', (e) =>{
+      var node = e.cyTarget,
+        data = node._private.data;
+      this.setState({
+        selectedNodeData: data
+      })
+    });
+
+    this.cy.on('tap', 'edge', (e) =>{
       var node = e.cyTarget,
         data = node._private.data;
       this.setState({
@@ -139,7 +155,7 @@ export default class GraphContainer extends React.Component{
     return(
       <div className="cy-container">
         <div className="box info">
-          <h5> Node info </h5>
+          <h5> Info </h5>
           <div className="content">
             {Object.keys(this.state.selectedNodeData).map((key) => {
               var value = this.state.selectedNodeData[key];
