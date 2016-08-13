@@ -22,11 +22,22 @@ UNION ALL
 
 
 
-Development
+## Development
 ```
 # first shell window
 npm run dev:webpack
 
 # second shell window
 npm run dev:electron
+```
+
+## Build
+```
+#install dependencies (this could take a while)
+npm install
+
+#run the build (the installer will be in the dist folder)
+npm run dist
+
+
 ```
