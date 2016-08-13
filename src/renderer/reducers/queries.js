@@ -129,6 +129,15 @@ export default function (state = INITIAL_STATE, action) {
         error: action.error,
       });
     }
+    case types.SAVE_PNG_SUCCESS: {
+      return changeStateByCurrentQuery(state, {
+      });
+    }
+    case types.SAVE_PNG_FAILURE: {
+      return changeStateByCurrentQuery(state, {
+        error: action.error,
+      });
+    }
     case types.IMPORT_QUERY_SUCCESS: {
       return changeStateByCurrentQuery(state, {
         name: action.name,

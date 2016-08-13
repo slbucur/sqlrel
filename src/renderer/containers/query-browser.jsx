@@ -278,6 +278,9 @@ class QueryBrowserContainer extends Component {
   importGraphStyle() {
     this.props.dispatch(QueryActions.importGraphStyle());
   }
+  savePNG(base64){
+    this.props.dispatch(QueryActions.savePNG(base64));
+  }
 
   copyToClipboard (rows, type) {
     this.props.dispatch(QueryActions.copyToClipboard(rows, type));
@@ -286,6 +289,7 @@ class QueryBrowserContainer extends Component {
   handleExecuteQuery (sqlQuery) {
     this.props.dispatch(QueryActions.executeQueryIfNeeded(sqlQuery));
   }
+
 
   filterDatabases(name, databases) {
     const regex = RegExp(name, 'i');
@@ -403,7 +407,9 @@ class QueryBrowserContainer extends Component {
             onCopyToClipboardClick={::this.copyToClipboard}
             onSQLChange={::this.onSQLChange}
             onGraphStyleChange={::this.onGraphStyleChange}
-            onSelectionChange={::this.onQuerySelectionChange} />
+            onSelectionChange={::this.onQuerySelectionChange}
+            savePNG={::this.savePNG}
+          />
         </TabPanel>
       );
     });

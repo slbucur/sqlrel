@@ -246,6 +246,10 @@ export default class Query extends Component {
     this.refs.queryBoxTextarea.editor.focus();
   }
 
+  savePNG(base64){
+    this.props.savePNG(base64);
+  }
+
   render() {
     const { widthOffset, client, query, onCopyToClipboardClick, onSQLChange, onGraphStyleChange } = this.props;
     const infos = INFOS[client];
@@ -353,6 +357,7 @@ export default class Query extends Component {
             query={query.queryHistory[query.queryHistory.length - 1]}
             graphStyle={query.graphStyle}
             results={query.results}
+            savePNG={::this.savePNG}
             isExecuting={query.isExecuting}
           />
         </div>

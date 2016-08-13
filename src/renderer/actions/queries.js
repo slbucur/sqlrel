@@ -25,6 +25,10 @@ export const SAVE_GRAPH_STYLE_REQUEST = 'SAVE_GRAPH_STYLE_REQUEST';
 export const SAVE_GRAPH_STYLE_SUCCESS = 'SAVE_GRAPH_STYLE_SUCCESS';
 export const SAVE_GRAPH_STYLE_FAILURE = 'SAVE_GRAPH_STYLE_FAILURE';
 
+export const SAVE_PNG_REQUEST = 'SAVE_PNG_REQUEST';
+export const SAVE_PNG_SUCCESS = 'SAVE_PNG_SUCCESS';
+export const SAVE_PNG_FAILURE = 'SAVE_PNG_FAILURE';
+
 export const UPDATE_QUERY = 'UPDATE_QUERY';
 export const UPDATE_GRAPH_STYLE = 'UPDATE_GRAPH_STYLE';
 export const IMPORT_QUERY_REQUEST = 'IMPORT_QUERY_REQUEST';
@@ -234,6 +238,28 @@ export function importGraphStyle () {
       dispatch({ type: IMPORT_GRAPH_STYLE_SUCCESS, graphStyleFilename:filename[0] , graphStyle});
     } catch (error) {
       dispatch({ type: IMPORT_GRAPH_STYLE_FAILURE, error });
+    }
+  };
+}
+
+export function savePNG (base64) {
+  return async (dispatch, getState) => {
+    dispatch({ type: SAVE_GRAPH_STYLE_REQUEST });
+    try {
+      const currentQuery = getCurrentQuery(getState());
+      const filters = [
+        { name: 'PNG', extensions: ['png'] },
+        { name: 'All Files', extensions: ['*'] },
+      ];
+
+      base64 = base64.replace(/^data:image\/png;base64,/, "");
+      let pngFilename = await showSaveDialog(filters);
+
+      await saveFile(pngFilename, base64, 'base64');
+
+      dispatch({ type: SAVE_PNG_SUCCESS });
+    } catch (error) {
+      dispatch({ type: SAVE_PNG_FAILURE, error });
     }
   };
 }

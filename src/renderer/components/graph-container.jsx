@@ -151,9 +151,22 @@ export default class GraphContainer extends React.Component{
     return false;
   }
 
+  savePNG(){
+    if(!this.cy){
+      return;
+    }
+    let base64 = this.cy.png({scale: 5});
+    this.props.savePNG(base64);
+  }
+
   render(){
     return(
       <div className="cy-container">
+        <div className="box options">
+          <button
+            className="ui button blue mini"
+            onClick={::this.savePNG}>PNG</button>
+        </div>
         <div className="box info">
           <h5> Info </h5>
           <div className="content">
