@@ -158,6 +158,31 @@ export function saveQuery () {
   };
 }
 
+export function saveGraphStyle () {
+  return async (dispatch, getState) => {
+    dispatch({ type: SAVE_QUERY_REQUEST });
+    try {
+      const currentQuery = getCurrentQuery(getState());
+      const filters = [
+        { name: 'CSS', extensions: ['css'] },
+        { name: 'All Files', extensions: ['*'] },
+      ];
+
+      let filename = (currentQuery.filename || await showSaveDialog(filters));
+      if (path.extname(filename) !== '.css') {
+        filename += '.css';
+      }
+
+      await saveFile(filename, currentQuery.graphStyle);
+      const name = path.basename(filename, '.css');
+
+      dispatch({ type: SAVE_QUERY_SUCCESS, name, filename });
+    } catch (error) {
+      dispatch({ type: SAVE_QUERY_FAILURE, error });
+    }
+  };
+}
+
 
 function shouldExecuteQuery (query, state) {
   const currentQuery = getCurrentQuery(state);

@@ -87,6 +87,9 @@ export default class GraphContainer extends React.Component{
           name: 'cose',
           directed: true,
           padding: 10
+        },
+        oncClick: function(event){
+          alert(event);
         }
       });
   }

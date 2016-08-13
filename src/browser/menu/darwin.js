@@ -69,6 +69,11 @@ export function buildTemplate(app, buildNewWindow, appConfig) {
           accelerator: 'Cmd+S',
           click: (item, win) => win.webContents.send('sqlectron:save-query'),
         },
+        {
+          label: 'Save Graph Style',
+          accelerator: 'Cmd+G',
+          click: (item, win) => win.webContents.send('sqlectron:save-graph-style'),
+        }
       ],
     },
     {
