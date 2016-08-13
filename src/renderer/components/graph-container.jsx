@@ -140,7 +140,13 @@ export default class GraphContainer extends React.Component{
       <div className="cy-container">
         <div className="box info">
           <h5> Node info </h5>
-          {JSON.stringify(this.state.selectedNodeData)}
+          <div className="content">
+            {Object.keys(this.state.selectedNodeData).map((key) => {
+              var value = this.state.selectedNodeData[key];
+              return (<div> <b>{key} :</b> <span> {value} </span></div>);
+            })
+            }
+          </div>
 
         </div>
         <div id="cy" style={{height: this.props.height * 2}}>
