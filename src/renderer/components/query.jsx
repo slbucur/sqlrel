@@ -287,7 +287,7 @@ export default class Query extends Component {
               width={500}
               onResize={::this.onGraphStyleBoxResize()}>
               <AceEditor
-                mode="javascript"
+                mode="css"
                 theme="ambiance"
                 name="graphstylebox"
                 height="100%"
@@ -351,6 +351,7 @@ export default class Query extends Component {
             height={QUERY_EDITOR_HEIGTH}
             copied={query.copied}
             query={query.queryHistory[query.queryHistory.length - 1]}
+            graphStyle={query.graphStyle}
             results={query.results}
             isExecuting={query.isExecuting}
           />

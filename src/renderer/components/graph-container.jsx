@@ -25,7 +25,7 @@ export default class GraphContainer extends React.Component{
           nodes[0]['data'][itemKey] = row[key];
         }
         if(key.includes('2')){
-          var itemKey = key = key.replace('2', '');
+          var itemKey = key.replace('2', '');
           nodes[1]['data'][itemKey] = row[key];
         }
       }
@@ -42,29 +42,36 @@ export default class GraphContainer extends React.Component{
     else{
       elements = {
         nodes: [
-          { data: { id: 'cat' } },
-          { data: { id: 'bird' } },
-          { data: { id: 'ladybug' } },
-          { data: { id: 'aphid' } },
-          { data: { id: 'rose' } },
-          { data: { id: 'grasshopper' } },
-          { data: { id: 'plant' } },
-          { data: { id: 'wheat' } }
+          { data: { id: 'test1' } },
+          { data: { id: 'test2' } },
         ],
           edges: [
-        { data: { source: 'cat', target: 'bird' } },
-        { data: { source: 'bird', target: 'ladybug' } },
-        { data: { source: 'bird', target: 'grasshopper' } },
-        { data: { source: 'grasshopper', target: 'plant' } },
-        { data: { source: 'grasshopper', target: 'wheat' } },
-        { data: { source: 'ladybug', target: 'aphid' } },
-        { data: { source: 'aphid', target: 'rose' } }
+        { data: { source: 'test1', target: 'test2' } },
       ]
       }
     }
 
-    console.log(elements);
-    console.log('* Cytoscape.js is rendering the graph..');
+    var style = this.props.graphStyle ||
+      `
+        node{
+          height: 80;
+          width: 80;
+          background-fit: cover;
+          border-color: #000;
+          border-width: 3;
+          border-opacity: 0.5;
+          content: data(name);
+          text-valign: center;
+        }
+        edge{
+          width: 6;
+          target-arrow-shape: triangle;
+          line-color: #ffaaaa;
+          target-arrow-color: #ffaaaa;
+          curve-style: bezier;        
+        }`;
+
+    console.log('* Cytoscape.js is rendering the graph..', elements);
 
     this.cy = cytoscape(
       {
@@ -73,27 +80,7 @@ export default class GraphContainer extends React.Component{
         boxSelectionEnabled: false,
         autounselectify: true,
 
-        style: cytoscape.stylesheet()
-          .selector('node')
-          .css({
-            'height': 80,
-            'width': 80,
-            'background-fit': 'cover',
-            'border-color': '#000',
-            'border-width': 3,
-            'border-opacity': 0.5,
-            'content': 'data(name)',
-            'text-valign': 'center',
-          })
-          .selector('edge')
-          .css({
-            'width': 6,
-            'target-arrow-shape': 'triangle',
-            'line-color': '#ffaaaa',
-            'target-arrow-color': '#ffaaaa',
-            'curve-style': 'bezier'
-          })
-        ,
+        style: style,
         elements: elements,
 
         layout: {
