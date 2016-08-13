@@ -21,6 +21,7 @@ export const SAVE_QUERY_REQUEST = 'SAVE_QUERY_REQUEST';
 export const SAVE_QUERY_SUCCESS = 'SAVE_QUERY_SUCCESS';
 export const SAVE_QUERY_FAILURE = 'SAVE_QUERY_FAILURE';
 export const UPDATE_QUERY = 'UPDATE_QUERY';
+export const UPDATE_GRAPH_STYLE = 'UPDATE_GRAPH_STYLE';
 
 
 export function newQuery (database) {
@@ -66,6 +67,12 @@ export function executeDefaultSelectQueryIfNeeded (database, table) {
   };
 }
 
+export function updateGraphStyle (graphStyle) {
+  return (dispatch) => {
+    dispatch({ type: UPDATE_GRAPH_STYLE, graphStyle })
+  };
+}
+
 export function updateQueryIfNeeded (query, selectedQuery) {
   return (dispatch, getState) => {
     if (shouldUpdateQuery(query, selectedQuery, getState())) {
@@ -73,6 +80,8 @@ export function updateQueryIfNeeded (query, selectedQuery) {
     }
   };
 }
+
+
 
 function updateQuery (query, selectedQuery) {
   return { type: UPDATE_QUERY, query, selectedQuery };

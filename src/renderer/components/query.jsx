@@ -3,6 +3,8 @@ import { debounce } from 'lodash';
 import AceEditor from 'react-ace';
 import ace from 'brace';
 import 'brace/mode/sql';
+import 'brace/mode/javascript';
+import 'brace/mode/css';
 import 'brace/theme/ambiance';
 import 'brace/ext/language_tools';
 import 'brace/ext/searchbox';
@@ -163,7 +165,9 @@ export default class Query extends Component {
   }
 
   onGraphStyleBoxResize(){
-    // this.refs.graphStyleBoxTextarea.editor.resize();
+    if(this.refs.graphStyleBoxTextarea){
+      this.refs.graphStyleBoxTextarea.editor.resize();
+    }
   }
 
   getQueryCompletions(props) {
@@ -243,7 +247,7 @@ export default class Query extends Component {
   }
 
   render() {
-    const { widthOffset, client, query, onCopyToClipboardClick, onSQLChange } = this.props;
+    const { widthOffset, client, query, onCopyToClipboardClick, onSQLChange, onGraphStyleChange } = this.props;
     const infos = INFOS[client];
     console.log(query);
     return (
@@ -283,17 +287,17 @@ export default class Query extends Component {
               width={500}
               onResize={::this.onGraphStyleBoxResize()}>
               <AceEditor
-                mode="sql"
+                mode="javascript"
                 theme="ambiance"
                 name="graphstylebox"
                 height="100%"
                 width="100%"
                 ref="graphStyleBoxTextarea"
-                //value={query.query}
+                value={query.graphStyle}
                 showPrintMargin={false}
                 commands={this.getCommands()}
                 editorProps={{ $blockScrolling: Infinity }}
-                //onChange={debounce(onSQLChange, 50)}
+                onChange={debounce(onGraphStyleChange, 50)}
                 enableBasicAutocompletion
                 enableLiveAutocompletion
               />

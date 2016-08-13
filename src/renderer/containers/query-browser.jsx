@@ -153,6 +153,10 @@ class QueryBrowserContainer extends Component {
     this.props.dispatch(QueryActions.updateQueryIfNeeded(sqlQuery));
   }
 
+  onGraphStyleChange(graphStyle){
+    this.props.dispatch(QueryActions.updateGraphStyle(graphStyle));
+  }
+
   onQuerySelectionChange (sqlQuery, selectedQuery) {
     this.props.dispatch(QueryActions.updateQueryIfNeeded(sqlQuery, selectedQuery));
   }
@@ -384,6 +388,7 @@ class QueryBrowserContainer extends Component {
             onExecQueryClick={::this.handleExecuteQuery}
             onCopyToClipboardClick={::this.copyToClipboard}
             onSQLChange={::this.onSQLChange}
+            onGraphStyleChange={::this.onGraphStyleChange}
             onSelectionChange={::this.onQuerySelectionChange} />
         </TabPanel>
       );

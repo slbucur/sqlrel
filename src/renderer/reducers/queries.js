@@ -85,6 +85,12 @@ export default function (state = INITIAL_STATE, action) {
         copied: false,
       });
     }
+    case types.UPDATE_GRAPH_STYLE: {
+      return changeStateByCurrentQuery(state, {
+        graphStyle: action.graphStyle,
+        copied: false,
+      });
+    }
     case types.COPY_QUERY_RESULT_TO_CLIPBOARD_REQUEST: {
       return changeStateByCurrentQuery(state, {
         error: null,
