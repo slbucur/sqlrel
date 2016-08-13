@@ -1,9 +1,15 @@
 import React,{Component} from 'react';
 import cytoscape from 'cytoscape';
-
+require('./graph-container.css');
 
 export default class GraphContainer extends React.Component{
 
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      selectedNodeData: {}
+    };
+  }
 
   getCyElements(){
 
@@ -87,11 +93,16 @@ export default class GraphContainer extends React.Component{
           name: 'cose',
           directed: true,
           padding: 10
-        },
-        oncClick: function(event){
-          alert(event);
         }
       });
+
+    this.cy.on('tap', 'node', (e) =>{
+      var node = e.cyTarget,
+        data = node._private.data;
+      this.setState({
+        selectedNodeData: data
+      })
+    });
   }
 
   componentDidUpdate(){
@@ -99,29 +110,42 @@ export default class GraphContainer extends React.Component{
       this.cy.destroy();
       this.renderCytoscapeElement();
     }
+    this.updateCy = false;
   }
 
   componentDidMount(){
-    this.setState({'loaded': true});
     this.renderCytoscapeElement();
   }
 
-  shouldComponentUpdate(nextProps) {
-    return (
-      (!nextProps.isExecuting && this.props.isExecuting) ||
+  shouldCyUpdate(nextProps){
+    return (!nextProps.isExecuting && this.props.isExecuting) ||
       (nextProps.query !== this.props.query) ||
-      (nextProps.copied && !this.props.copied)
-    );
+      (nextProps.copied && !this.props.copied);
+  }
+  shouldComponentUpdate(nextProps) {
+    if(this.shouldCyUpdate(nextProps)){
+      this.updateCy = true;
+      return true;
+    }
+
+    if(Object.keys(this.state.selectedNodeData).length !== 0){
+      this.updateCy = false;
+      return true;
+    }
+    return false;
   }
 
   render(){
-    if(this.props.results){
-      console.log("Damn, I need to update");
-      this.updateCy = true;
-    }
     return(
-      <div className="node_selected">
-        <div id="cy" style={{height: this.props.height * 2}}/>
+      <div className="cy-container">
+        <div className="box info">
+          <h5> Node info </h5>
+          {JSON.stringify(this.state.selectedNodeData)}
+
+        </div>
+        <div id="cy" style={{height: this.props.height * 2}}>
+
+        </div>
       </div>
     )
   }
