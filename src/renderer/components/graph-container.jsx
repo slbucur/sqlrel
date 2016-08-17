@@ -159,13 +159,25 @@ export default class GraphContainer extends React.Component{
     this.props.savePNG(base64);
   }
 
+  saveJPHP(){
+    if(!this.cy){
+      return;
+    }
+    this.props.saveJPHP();
+  }
+
   render(){
     return(
       <div className="cy-container">
         <div className="box options">
           <button
             className="ui button blue mini"
-            onClick={::this.savePNG}>PNG</button>
+            onClick={::this.savePNG}>PNG
+          </button>
+          <button
+            className="ui button green mini"
+            onClick={::this.saveJPHP}>JPHP
+          </button>
         </div>
         <div className="box info">
           <h5> Info </h5>

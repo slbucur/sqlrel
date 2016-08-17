@@ -39,6 +39,10 @@ export const IMPORT_GHAPH_STYLE_REQUEST = 'IMPORT_GHAPH_STYLE_REQUEST';
 export const IMPORT_GRAPH_STYLE_SUCCESS = 'IMPORT_GRAPH_STYLE_SUCCESS';
 export const IMPORT_GRAPH_STYLE_FAILURE = 'IMPORT_GRAPH_STYLE_FAILURE';
 
+export const SAVE_JPHP_REQUEST = 'SAVE_JPHP_REQUEST';
+export const SAVE_JPHP_SUCCESS = 'SAVE_JPHP_SUCCESS';
+export const SAVE_JPHP_FAILURE = 'SAVE_JPHP_FAILURE';
+
 
 export function newQuery (database) {
   return { type: NEW_QUERY, database };
@@ -244,7 +248,7 @@ export function importGraphStyle () {
 
 export function savePNG (base64) {
   return async (dispatch, getState) => {
-    dispatch({ type: SAVE_GRAPH_STYLE_REQUEST });
+    dispatch({ type: SAVE_PNG_REQUEST });
     try {
       const currentQuery = getCurrentQuery(getState());
       const filters = [
@@ -260,6 +264,19 @@ export function savePNG (base64) {
       dispatch({ type: SAVE_PNG_SUCCESS });
     } catch (error) {
       dispatch({ type: SAVE_PNG_FAILURE, error });
+    }
+  };
+}
+
+export function saveJPHP (base64) {
+  return async (dispatch, getState) => {
+    dispatch({ type: SAVE_JPHP_REQUEST });
+    try {
+      const currentQuery = getCurrentQuery(getState());
+      console.log(currentQuery);
+      dispatch({ type: SAVE_JPHP_SUCCESS });
+    } catch (error) {
+      dispatch({ type: SAVE_JPHP_FAILURE, error });
     }
   };
 }

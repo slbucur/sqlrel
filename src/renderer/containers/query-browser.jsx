@@ -275,11 +275,17 @@ class QueryBrowserContainer extends Component {
   importQuery() {
     this.props.dispatch(QueryActions.importQuery());
   }
+
   importGraphStyle() {
     this.props.dispatch(QueryActions.importGraphStyle());
   }
+
   savePNG(base64){
     this.props.dispatch(QueryActions.savePNG(base64));
+  }
+
+  saveJPHP(){
+    this.props.dispatch(QueryActions.saveJPHP());
   }
 
   copyToClipboard (rows, type) {
@@ -409,6 +415,7 @@ class QueryBrowserContainer extends Component {
             onGraphStyleChange={::this.onGraphStyleChange}
             onSelectionChange={::this.onQuerySelectionChange}
             savePNG={::this.savePNG}
+            saveJPHP={::this.saveJPHP}
           />
         </TabPanel>
       );

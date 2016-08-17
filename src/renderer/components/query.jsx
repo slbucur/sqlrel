@@ -250,6 +250,10 @@ export default class Query extends Component {
     this.props.savePNG(base64);
   }
 
+  saveJPHP(base64){
+    this.props.saveJPHP(base64);
+  }
+
   render() {
     const { widthOffset, client, query, onCopyToClipboardClick, onSQLChange, onGraphStyleChange } = this.props;
     const infos = INFOS[client];
@@ -358,6 +362,7 @@ export default class Query extends Component {
             graphStyle={query.graphStyle}
             results={query.results}
             savePNG={::this.savePNG}
+            saveJPHP={::this.saveJPHP}
             isExecuting={query.isExecuting}
           />
         </div>

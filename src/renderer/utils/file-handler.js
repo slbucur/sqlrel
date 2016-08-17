@@ -43,6 +43,21 @@ export function showOpenDialog(filters, defaultPath) {
   });
 }
 
+export function showOpenDirectoryDialog(filters, defaultPath) {
+  return new Promise((resolve, reject) => {
+    remote.dialog.showOpenDialog({
+      defaultPath,
+      filters,
+      properties: ['openDirectory'],
+    }, (fileName) => {
+      if (fileName) {
+        return resolve(fileName);
+      }
+
+      return reject();
+    });
+  });
+}
 
 export function openFile(fileName) {
   return new Promise((resolve, reject) => {
