@@ -1,0 +1,54 @@
+Boot.attach('load', function(){
+	function getCyElements(rows){
+
+    	function rowToRel(row){
+	      	//if no relation don't add
+	      	if(!row['node1'] || !row['node2']){
+	        	return [];
+	      	}
+	      	var rel = { data: { source: row['node1'], target: row['node2'] } };
+	      	var nodes = [
+	        	{ data: { id: row['node1'] } },
+	        	{ data: { id: row['node2'] } },
+	      	];
+	      	for(var key in row){
+	        	if(key.includes('1')){
+	          		var itemKey = key.replace('1', '');
+	          		nodes[0]['data'][itemKey] = row[key];
+	          		continue;
+	        	}
+	        	if(key.includes('2')){
+	          	var itemKey = key.replace('2', '');
+	          		nodes[1]['data'][itemKey] = row[key];
+	          		continue;
+	        	}
+	        	//properties that don't belong to nodes go to the relationship
+	        	rel.data[key] = row[key];
+	      	}
+      		return [nodes[0], nodes[1], rel];
+    	}
+    	return rows.map(rowToRel).reduce(function(prev, curr){ return prev.concat(curr) }, []);
+  	}
+
+	ajax.simple('arGetData', {}, function(obj, data){
+		var elements = [],
+			items = (JSON.parse(data.content));
+		elements = getCyElements(items);
+
+		var style = $('.graph-style').text();
+		var cy = cytoscape({
+
+			container: $('.cy-container'), // container to render in
+
+			elements: elements,
+
+			style: style,
+
+			layout: {
+				name: 'cose',
+				fit: false,
+			}
+
+		});
+	});
+});

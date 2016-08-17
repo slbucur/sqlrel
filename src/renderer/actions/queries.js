@@ -4,7 +4,7 @@ import csvStringify from 'csv-stringify';
 import { clipboard } from 'electron'; // eslint-disable-line import/no-unresolved
 import { getCurrentDBConn, getDBConnByName } from './connections';
 import { rowsValuesToString } from '../utils/convert';
-import { showSaveDialog, saveFile, showOpenDialog, openFile } from '../utils/file-handler';
+import { showSaveDialog, saveFile, showOpenDialog, openFile, showOpenDirectoryDialog } from '../utils/file-handler';
 import wait from '../utils/wait';
 
 
@@ -274,6 +274,32 @@ export function saveJPHP (base64) {
     try {
       const currentQuery = getCurrentQuery(getState());
       console.log(currentQuery);
+
+      let directory = await showOpenDirectoryDialog();
+      directory = directory[0];
+      let phpFilename = path.join(directory, 'GraphModule.php'),
+        htmFilename = path.join(directory, 'GraphModule.htm'),
+        cssFilename = path.join(directory, 'css', 'relations.css'),
+        jsFilename = path.join(directory, 'js', 'relations.js'),
+        cytoFilename = path.join(directory, 'js', 'cytoscape.js');
+
+
+      let html = require('raw!./templates/jphp_project/GraphModule.html'),
+        php = require('raw!./templates/jphp_project/GraphModule.php'),
+        relationCss = require('raw!./templates/jphp_project/css/relations.css'),
+        relationJs = require('raw!./templates/jphp_project/js/relations.txt'),
+        cytoscape = require('raw!./templates/jphp_project/js/cytoscape.txt');
+
+      php = php.replace('{query}', currentQuery.query);
+      html = html.replace('{graph-style}', currentQuery.graphStyle);
+
+      await saveFile(phpFilename, php);
+      await saveFile(htmFilename, html);
+
+      await saveFile(cssFilename, relationCss);
+      await saveFile(jsFilename, relationJs);
+      await saveFile(cytoFilename, cytoscape);
+
       dispatch({ type: SAVE_JPHP_SUCCESS });
     } catch (error) {
       dispatch({ type: SAVE_JPHP_FAILURE, error });

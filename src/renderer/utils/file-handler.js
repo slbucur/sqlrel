@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { remote } from 'electron'; // eslint-disable-line import/no-unresolved
-
+import filendir from 'filendir';
 
 export function showSaveDialog(filters) {
   return new Promise((resolve, reject) => {
@@ -19,7 +19,7 @@ export function showSaveDialog(filters) {
 
 export function saveFile(fileName, data, encoding = 'utf8') {
   return new Promise((resolve, reject) => {
-    fs.writeFile(fileName, data, encoding, err => {
+    filendir.writeFile(fileName, data, encoding, err => {
       if (err) { return reject(err); }
       return resolve();
     });
